@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Smart Parking - Locations</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+
+        .parking-filter {
+            max-width: 900px;
+            margin: 25px auto;
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .parking-filter input {
+            flex: 1;
+            max-width: 550px;
+            padding: 15px 18px;
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .parking-filter select {
+            width: 200px;
+            padding: 15px;
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
+            font-size: 16px;
+            background: white;
+        }
+
+        .nearby-container {
+            text-align: center;
+            margin: 25px auto 35px;
+        }
+
+        .nearby-btn {
+            padding: 14px 25px;
+            border: none;
+            border-radius: 10px;
+            background: #2563eb;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .nearby-btn:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+        }
+
+        #locationMessage {
+            margin-top: 12px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .location-grid {
+            max-width: 1250px;
+            margin: 30px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+        }
+
+        .location-card {
+            background: white;
+            padding: 30px 20px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 18px rgba(0,0,0,0.08);
+            transition: 0.3s;
+        }
+
+        .location-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .location-icon {
+            font-size: 55px;
+        }
+
+        .location-card h2 {
+            margin: 10px 0;
+            font-size: 25px;
+        }
+
+        .location-card p {
+            color: #444;
+            line-height: 1.5;
+        }
+
+        .free {
+            color: green !important;
+            font-weight: bold;
+        }
+
+        .paid {
+            color: #2563eb !important;
+            font-weight: bold;
+        }
+
+        .availability {
+            color: #15803d !important;
+            font-weight: bold;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+
+        .view-btn,
+        .map-btn {
+            display: inline-block;
+            padding: 10px 14px;
+            color: white;
+            text-decoration: none;
+            border-radius: 7px;
+            font-size: 14px;
+        }
+
+        .view-btn {
+            background: #111827;
+        }
+
+        .view-btn:hover {
+            background: #2563eb;
+        }
+
+        .map-btn {
+            background: #16a34a;
+        }
+
+        .map-btn:hover {
+            background: #15803d;
+        }
+
+        #noParkingResults {
+            display: none;
+            text-align: center;
+            padding: 50px;
+            font-size: 20px;
+            color: #666;
+        }
+
+        @media (max-width: 1000px) {
+
+            .location-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+        }
+
+        @media (max-width: 650px) {
+
+            .parking-filter {
+                flex-direction: column;
+                margin: 25px 20px;
+            }
+
+            .parking-filter input {
+                max-width: none;
+            }
+
+            .parking-filter select {
+                width: 100%;
+            }
+
+            .location-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <div class="logo">
+        🚗 Smart Parking
+    </div>
+
+    <nav>
+
+        <a href="index.html">
+            Home
+        </a>
+
+        <a href="locations.html">
+            Locations
+        </a>
+
+        <a href="history.html">
+            My Bookings
+        </a>
+
+        <a href="admin.html">
+            Admin
+        </a>
+
+    </nav>
+
+</header>
+
+
+<main>
+
+<section>
+
+    <h1 style="
+        text-align:center;
+        font-size:38px;
+        margin-top:60px;
+        margin-bottom:10px;
+    ">
+
+        Choose Your Parking Location
+
+    </h1>
+
+
+    <p style="
+        text-align:center;
+        color:#666;
+    ">
+
+        Select a place to view available parking slots.
+
+    </p>
+
+
+    <!-- FIND NEARBY PARKING -->
+
+    <div class="nearby-container">
+
+        <button
+            class="nearby-btn"
+            onclick="findNearbyParking()">
+
+            📍 Find Parking Near Me
+
+        </button>
+
+        <p id="locationMessage"></p>
+
+    </div>
+
+
+    <!-- SEARCH & FILTER -->
+
+    <div class="parking-filter">
+
+        <input
+            type="text"
+            id="parkingSearch"
+            placeholder="🔍 Search parking location..."
+        >
+
+
+        <select id="parkingFilter">
+
+            <option value="all">
+                All Parking
+            </option>
+
+            <option value="free">
+                🟢 Free Parking
+            </option>
+
+            <option value="paid">
+                💰 Paid Parking
+            </option>
+
+        </select>
+
+    </div>
+
+
+    <!-- LOCATIONS -->
+
+    <div class="location-grid">
+
+
+        <!-- COLLEGE -->
+
+        <div class="location-card"
+             data-name="college"
+             data-type="free">
+
+            <div class="location-icon">
+                🏫
+            </div>
+
+            <h2>
+                College
+            </h2>
+
+            <p>
+                Parking for students,
+                staff and visitors.
+            </p>
+
+            <p class="free">
+                FREE for students & staff
+            </p>
+
+            <p class="availability"
+               data-location="College">
+
+                🟢 12 / 12 Slots Available
+
+            </p>
+
+            <div class="button-group">
+
+                <a
+                    href="parking.html?location=college"
+                    class="view-btn">
+
+                    View Parking
+
+                </a>
+
+                <a
+                    href="https://www.google.com/maps/dir/?api=1&destination=college"
+                    target="_blank"
+                    class="map-btn">
+
+                    📍 Directions
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- HOSPITAL -->
+
+        <div class="location-card"
+             data-name="hospital"
+             data-type="paid">
+
+            <div class="location-icon">
+                🏥
+            </div>
+
+            <h2>
+                Hospital
+            </h2>
+
+            <p>
+                Parking for patients
+                and visitors.
+            </p>
+
+            <p class="paid">
+                ₹20 / hour
+            </p>
+
+            <p class="availability"
+               data-location="Hospital">
+
+                🟢 12 / 12 Slots Available
+
+            </p>
+
+            <div class="button-group">
+
+                <a
+                    href="parking.html?location=hospital"
+                    class="view-btn">
+
+                    View Parking
+
+                </a>
+
+                <a
+                    href="https://www.google.com/maps/dir/?api=1&destination=hospital"
+                    target="_blank"
+                    class="map-btn">
+
+                    📍 Directions
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- SHOPPING MALL -->
+
+        <div class="location-card"
+             data-name="shopping mall"
+             data-type="paid">
+
+            <div class="location-icon">
+                🏬
+            </div>
+
+            <h2>
+                Shopping Mall
+            </h2>
+
+            <p>
+                Convenient parking
+                for customers.
+            </p>
+
+            <p class="paid">
+                ₹30 / hour
+            </p>
+
+            <p class="availability"
+               data-location="Shopping Mall">
+
+                🟢 12 / 12 Slots Available
+
+            </p>
+
+            <div class="button-group">
+
+                <a
+                    href="parking.html?location=mall"
+                    class="view-btn">
+
+                    View Parking
+
+                </a>
+
+                <a
+                    href="https://www.google.com/maps/dir/?api=1&destination=shopping+mall"
+                    target="_blank"
+                    class="map-btn">
+
+                    📍 Directions
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- AIRPORT -->
+
+        <div class="location-card"
+             data-name="airport"
+             data-type="paid">
+
+            <div class="location-icon">
+                ✈️
+            </div>
+
+            <h2>
+                Airport
+            </h2>
+
+            <p>
+                Short-term and
+                long-term parking.
+            </p>
+
+            <p class="paid">
+                ₹50 / hour
+            </p>
+
+            <p class="availability"
+               data-location="Airport">
+
+                🟢 12 / 12 Slots Available
+
+            </p>
+
+            <div class="button-group">
+
+                <a
+                    href="parking.html?location=airport"
+                    class="view-btn">
+
+                    View Parking
+
+                </a>
+
+                <a
+                    href="https://www.google.com/maps/dir/?api=1&destination=airport"
+                    target="_blank"
+                    class="map-btn">
+
+                    📍 Directions
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- OFFICE -->
+
+        <div class="location-card"
+             data-name="office"
+             data-type="free">
+
+            <div class="location-icon">
+                🏢
+            </div>
+
+            <h2>
+                Office
+            </h2>
+
+            <p>
+                Parking for employees
+                and visitors.
+            </p>
+
+            <p class="free">
+                FREE for employees
+            </p>
+
+            <p class="availability"
+               data-location="Office">
+
+                🟢 12 / 12 Slots Available
+
+            </p>
+
+            <div class="button-group">
+
+                <a
+                    href="parking.html?location=office"
+                    class="view-btn">
+
+                    View Parking
+
+                </a>
+
+                <a
+                    href="https://www.google.com/maps/dir/?api=1&destination=office"
+                    target="_blank"
+                    class="map-btn">
+
+                    📍 Directions
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- CINEMA -->
+
+        <div class="location-card"
+             data-name="cinema"
+             data-type="paid">
+
+            <div class="location-icon">
+                🎬
+            </div>
+
+            <h2>
+                Cinema
+            </h2>
+
+            <p>
+                Parking available
+                for movie visitors.
+            </p>
+
+            <p class="paid">
+                ₹20 / hour
+            </p>
+
+            <p class="availability"
+               data-location="Cinema">
+
+                🟢 12 / 12 Slots Available
+
+            </p>
+
+            <div class="button-group">
+
+                <a
+                    href="parking.html?location=cinema"
+                    class="view-btn">
+
+                    View Parking
+
+                </a>
+
+                <a
+                    href="https://www.google.com/maps/dir/?api=1&destination=cinema"
+                    target="_blank"
+                    class="map-btn">
+
+                    📍 Directions
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- STADIUM -->
+
+        <div class="location-card"
+             data-name="stadium"
+             data-type="paid">
+
+            <div class="location-icon">
+                🏟️
+            </div>
+
+            <h2>
+                Stadium
+            </h2>
+
+            <p>
+                Event parking
+                for visitors.
+            </p>
+
+            <p class="paid">
+                ₹40 / hour
+            </p>
+
+            <p class="availability"
+               data-location="Stadium">
+
+                🟢 12 / 12 Slots Available
+
+            </p>
+
+            <div class="button-group">
+
+                <a
+                    href="parking.html?location=stadium"
+                    class="view-btn">
+
+                    View Parking
+
+                </a>
+
+                <a
+                    href="https://www.google.com/maps/dir/?api=1&destination=stadium"
+                    target="_blank"
+                    class="map-btn">
+
+                    📍 Directions
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- PUBLIC PARKING -->
+
+        <div class="location-card"
+             data-name="public parking"
+             data-type="paid">
+
+            <div class="location-icon">
+                🏙️
+            </div>
+
+            <h2>
+                Public Parking
+            </h2>
+
+            <p>
+                Public parking spaces
+                around the city.
+            </p>
+
+            <p class="paid">
+                ₹10 / hour
+            </p>
+
+            <p class="availability"
+               data-location="Public Parking">
+
+                🟢 12 / 12 Slots Available
+
+            </p>
+
+            <div class="button-group">
+
+                <a
+                    href="parking.html?location=public"
+                    class="view-btn">
+
+                    View Parking
+
+                </a>
+
+                <a
+                    href="https://www.google.com/maps/dir/?api=1&destination=public+parking"
+                    target="_blank"
+                    class="map-btn">
+
+                    📍 Directions
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div id="noParkingResults">
+
+        🔍 No parking locations found.
+
+    </div>
+
+</section>
+
+</main>
+
+
+<footer>
+
+    <p>
+        © 2026 Universal Smart Parking Management Platform
+    </p>
+
+</footer>
+
+
+<script>
+
+    /* =========================
+       SEARCH & FILTER
+    ========================= */
+
+    const search =
+        document.getElementById(
+            "parkingSearch"
+        );
+
+
+    const filter =
+        document.getElementById(
+            "parkingFilter"
+        );
+
+
+    const cards =
+        document.querySelectorAll(
+            ".location-card"
+        );
+
+
+    const noResults =
+        document.getElementById(
+            "noParkingResults"
+        );
+
+
+    function filterParking() {
+
+        const searchText =
+            search.value
+                .toLowerCase()
+                .trim();
+
+
+        const filterValue =
+            filter.value;
+
+
+        let count = 0;
+
+
+        cards.forEach(
+            function(card) {
+
+                const name =
+                    card.dataset.name;
+
+
+                const type =
+                    card.dataset.type;
+
+
+                const searchMatch =
+                    name.includes(
+                        searchText
+                    );
+
+
+                const filterMatch =
+                    filterValue === "all" ||
+                    filterValue === type;
+
+
+                if (
+                    searchMatch &&
+                    filterMatch
+                ) {
+
+                    card.style.display =
+                        "block";
+
+                    count++;
+
+                } else {
+
+                    card.style.display =
+                        "none";
+
+                }
+
+            }
+        );
+
+
+        noResults.style.display =
+            count === 0
+                ? "block"
+                : "none";
+
+    }
+
+
+    search.addEventListener(
+        "input",
+        filterParking
+    );
+
+
+    filter.addEventListener(
+        "change",
+        filterParking
+    );
+
+
+    /* =========================
+       AVAILABLE SLOTS
+    ========================= */
+
+    function updateAvailability() {
+
+        const bookings =
+            JSON.parse(
+                localStorage.getItem(
+                    "bookings"
+                )
+            ) || [];
+
+
+        const availability =
+            document.querySelectorAll(
+                ".availability"
+            );
+
+
+        availability.forEach(
+            function(item) {
+
+                const location =
+                    item.dataset.location;
+
+
+                const booked =
+                    bookings.filter(
+                        function(booking) {
+
+                            return (
+                                booking.location ===
+                                location &&
+                                booking.status !==
+                                "Cancelled"
+                            );
+
+                        }
+                    ).length;
+
+
+                const totalSlots = 12;
+
+
+                const available =
+                    Math.max(
+                        0,
+                        totalSlots - booked
+                    );
+
+
+                if (available === 0) {
+
+                    item.textContent =
+                        "🔴 Parking Full";
+
+                } else {
+
+                    item.textContent =
+                        "🟢 " +
+                        available +
+                        " / " +
+                        totalSlots +
+                        " Slots Available";
+
+                }
+
+            }
+        );
+
+    }
+
+
+    updateAvailability();
+
+
+    /* =========================
+       FIND PARKING NEAR ME
+    ========================= */
+
+    function findNearbyParking() {
+
+        const message =
+            document.getElementById(
+                "locationMessage"
+            );
+
+
+        if (!navigator.geolocation) {
+
+            message.textContent =
+                "❌ Location is not supported by this browser.";
+
+            return;
+
+        }
+
+
+        message.textContent =
+            "📍 Getting your location...";
+
+
+        navigator.geolocation.getCurrentPosition(
+
+            function(position) {
+
+                const latitude =
+                    position.coords.latitude;
+
+
+                const longitude =
+                    position.coords.longitude;
+
+
+                message.textContent =
+                    "✅ Location found. Opening nearby parking...";
+
+
+                const mapsURL =
+                    "https://www.google.com/maps/search/?api=1" +
+                    "&query=parking" +
+                    "&center=" +
+                    latitude +
+                    "," +
+                    longitude;
+
+
+                window.open(
+                    mapsURL,
+                    "_blank"
+                );
+
+            },
+
+
+            function(error) {
+
+                if (error.code === 1) {
+
+                    message.textContent =
+                        "❌ Location permission was denied. Please allow location access.";
+
+                } else if (error.code === 2) {
+
+                    message.textContent =
+                        "❌ Your location could not be determined. Please try again.";
+
+                } else if (error.code === 3) {
+
+                    message.textContent =
+                        "❌ Location request timed out. Please try again.";
+
+                } else {
+
+                    message.textContent =
+                        "❌ Unable to get your location. Please try again.";
+
+                }
+
+            },
+
+            {
+                enableHighAccuracy: true,
+                timeout: 10000,
+                maximumAge: 0
+            }
+
+        );
+
+    }
+
+</script>
+
+
+</body>
+
+</html>

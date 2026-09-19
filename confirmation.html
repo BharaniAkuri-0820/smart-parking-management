@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Booking Confirmation</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        🚗 Smart Parking
+    </div>
+
+    <nav>
+
+        <a href="index.html">Home</a>
+
+        <a href="locations.html">Locations</a>
+
+        <a href="history.html">My Bookings</a>
+
+        <a href="admin.html">Admin</a>
+
+    </nav>
+
+</header>
+
+
+<main>
+
+<section class="confirmation-page">
+
+    <div class="success-icon">
+        ✓
+    </div>
+
+    <h1>Booking Confirmed!</h1>
+
+    <p class="success-text">
+        Your parking slot has been successfully booked.
+    </p>
+
+
+    <!-- RECEIPT -->
+
+    <div class="receipt" id="receipt">
+
+        <div class="receipt-header">
+
+            <h2>🚗 SMART PARKING</h2>
+
+            <p>Parking Booking Receipt</p>
+
+        </div>
+
+
+        <!-- BOOKING ID -->
+
+        <div class="booking-id">
+
+            <span>Booking ID</span>
+
+            <strong id="bookingId">-</strong>
+
+        </div>
+
+
+        <!-- DETAILS -->
+
+        <div class="receipt-details">
+
+            <div>
+                <span>Name</span>
+                <strong id="receiptName">-</strong>
+            </div>
+
+
+            <div>
+                <span>Phone</span>
+                <strong id="receiptPhone">-</strong>
+            </div>
+
+
+            <div>
+                <span>Location</span>
+                <strong id="receiptLocation">-</strong>
+            </div>
+
+
+            <div>
+                <span>Parking Slot</span>
+                <strong id="receiptSlot">-</strong>
+            </div>
+
+
+            <div>
+                <span>Vehicle Number</span>
+                <strong id="receiptVehicle">-</strong>
+            </div>
+
+
+            <div>
+                <span>Vehicle Type</span>
+                <strong id="receiptVehicleType">-</strong>
+            </div>
+
+
+            <div>
+                <span>Date</span>
+                <strong id="receiptDate">-</strong>
+            </div>
+
+
+            <div>
+                <span>Duration</span>
+                <strong id="receiptDuration">-</strong>
+            </div>
+
+        </div>
+
+
+        <!-- TOTAL -->
+
+        <div class="receipt-total">
+
+            <span>Total Parking Fee</span>
+
+            <strong id="receiptFee">-</strong>
+
+        </div>
+
+
+        <!-- QR -->
+
+        <div class="qr-box">
+
+            <div class="fake-qr">
+
+                ▓▓ ▓▓▓ ▓▓
+                <br>
+                ▓ ▓▓ ▓ ▓▓
+                <br>
+                ▓▓▓ ▓ ▓▓▓
+                <br>
+                ▓ ▓▓▓ ▓ ▓
+                <br>
+                ▓▓ ▓ ▓▓▓▓
+
+            </div>
+
+            <p>
+                Booking Verification
+            </p>
+
+        </div>
+
+
+        <div class="receipt-footer">
+
+            <p>
+                Thank you for using Smart Parking!
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- BUTTONS -->
+
+    <div class="confirmation-buttons">
+
+        <button onclick="window.print()">
+            🖨️ Print Receipt
+        </button>
+
+
+        <a href="locations.html">
+            Book Another Slot
+        </a>
+
+
+        <a href="history.html">
+            View My Bookings
+        </a>
+
+    </div>
+
+</section>
+
+</main>
+
+
+<footer>
+
+    <p>
+        © 2026 Universal Smart Parking Management Platform
+    </p>
+
+</footer>
+
+
+<!-- IMPORTANT -->
+
+<script src="js/script.js"></script>
+
+</body>
+
+</html>

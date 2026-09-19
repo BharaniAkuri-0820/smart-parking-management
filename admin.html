@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Smart Parking - Admin Dashboard</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+
+        .admin-page {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+
+        .admin-page h1 {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .admin-subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 35px;
+        }
+
+        /* DASHBOARD CARDS */
+
+        .dashboard-cards {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 20px;
+            margin-bottom: 35px;
+        }
+
+        .dashboard-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 5px 18px rgba(0,0,0,0.08);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .dashboard-icon {
+            font-size: 32px;
+        }
+
+        .dashboard-card span {
+            display: block;
+            color: #6b7280;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .dashboard-card strong {
+            font-size: 24px;
+            color: #111827;
+        }
+
+        /* SECTIONS */
+
+        .admin-section {
+            background: white;
+            padding: 25px;
+            margin-bottom: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 18px rgba(0,0,0,0.08);
+        }
+
+        .admin-section h2 {
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        /* LOCATION FILTER */
+
+        .location-filter {
+            margin-bottom: 20px;
+        }
+
+        .location-filter select {
+            padding: 11px 15px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        /* PARKING SLOTS */
+
+        .admin-slots {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .admin-slot {
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .admin-slot span {
+            display: block;
+            margin-top: 6px;
+            font-size: 13px;
+        }
+
+        .admin-slot.available {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        .admin-slot.occupied {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        /* BOOKING CARDS */
+
+        .booking-admin-card {
+            padding: 20px;
+            margin-bottom: 15px;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            background: #f8fafc;
+        }
+
+        .booking-admin-card h3 {
+            margin-top: 0;
+            color: #111827;
+        }
+
+        .booking-admin-details {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .booking-admin-detail {
+            padding: 10px;
+            background: white;
+            border-radius: 7px;
+        }
+
+        .booking-admin-detail strong {
+            display: block;
+            font-size: 12px;
+            color: #6b7280;
+            margin-bottom: 4px;
+        }
+
+        .active-status {
+            color: #15803d;
+            font-weight: bold;
+        }
+
+        .cancelled-status {
+            color: #dc2626;
+            font-weight: bold;
+        }
+
+        .no-admin-bookings {
+            text-align: center;
+            padding: 30px;
+            color: #666;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 1000px) {
+
+            .dashboard-cards {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .admin-slots {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+        }
+
+        @media (max-width: 650px) {
+
+            .dashboard-cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .admin-slots {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .booking-admin-details {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+        @media (max-width: 450px) {
+
+            .dashboard-cards {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <div class="logo">
+        🚗 Smart Parking
+    </div>
+
+    <nav>
+
+        <a href="index.html">
+            Home
+        </a>
+
+        <a href="locations.html">
+            Locations
+        </a>
+
+        <a href="history.html">
+            My Bookings
+        </a>
+
+        <a href="admin.html">
+            Admin
+        </a>
+
+    </nav>
+
+</header>
+
+
+<main>
+
+<section class="admin-page">
+
+    <h1>
+        Admin Dashboard
+    </h1>
+
+    <p class="admin-subtitle">
+        Manage parking operations and bookings.
+    </p>
+
+
+    <!-- DASHBOARD CARDS -->
+
+    <div class="dashboard-cards">
+
+        <div class="dashboard-card">
+
+            <div class="dashboard-icon">
+                🅿️
+            </div>
+
+            <div>
+
+                <span>
+                    Total Slots
+                </span>
+
+                <strong id="totalSlots">
+                    96
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="dashboard-card">
+
+            <div class="dashboard-icon">
+                🟢
+            </div>
+
+            <div>
+
+                <span>
+                    Available
+                </span>
+
+                <strong id="availableSlots">
+                    96
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="dashboard-card">
+
+            <div class="dashboard-icon">
+                🔴
+            </div>
+
+            <div>
+
+                <span>
+                    Occupied
+                </span>
+
+                <strong id="occupiedSlots">
+                    0
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="dashboard-card">
+
+            <div class="dashboard-icon">
+                📋
+            </div>
+
+            <div>
+
+                <span>
+                    Active Bookings
+                </span>
+
+                <strong id="totalBookings">
+                    0
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="dashboard-card">
+
+            <div class="dashboard-icon">
+                💰
+            </div>
+
+            <div>
+
+                <span>
+                    Revenue
+                </span>
+
+                <strong id="totalRevenue">
+                    ₹0
+                </strong>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- PARKING MANAGEMENT -->
+
+    <div class="admin-section">
+
+        <h2>
+            🅿️ Parking Slot Management
+        </h2>
+
+
+        <div class="location-filter">
+
+            <label>
+                Select Location:
+            </label>
+
+            <select id="adminLocation"
+                    onchange="displayAdminSlots()">
+
+                <option value="College">
+                    College
+                </option>
+
+                <option value="Hospital">
+                    Hospital
+                </option>
+
+                <option value="Shopping Mall">
+                    Shopping Mall
+                </option>
+
+                <option value="Airport">
+                    Airport
+                </option>
+
+                <option value="Office">
+                    Office
+                </option>
+
+                <option value="Cinema">
+                    Cinema
+                </option>
+
+                <option value="Stadium">
+                    Stadium
+                </option>
+
+                <option value="Public Parking">
+                    Public Parking
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div
+            id="adminSlots"
+            class="admin-slots">
+        </div>
+
+    </div>
+
+
+    <!-- RECENT BOOKINGS -->
+
+    <div class="admin-section">
+
+        <h2>
+            📋 Recent Bookings
+        </h2>
+
+        <div id="adminBookings">
+        </div>
+
+    </div>
+
+
+</section>
+
+</main>
+
+
+<footer>
+
+    <p>
+        © 2026 Universal Smart Parking Management Platform
+    </p>
+
+</footer>
+
+
+<script>
+
+
+// ========================================
+// GET BOOKINGS
+// ========================================
+
+function getBookings() {
+
+    return JSON.parse(
+        localStorage.getItem("bookings")
+    ) || [];
+
+}
+
+
+// ========================================
+// DASHBOARD
+// ========================================
+
+function updateDashboard() {
+
+    const bookings =
+        getBookings();
+
+
+    const activeBookings =
+        bookings.filter(
+            function(booking) {
+
+                return (
+                    booking.status !==
+                    "Cancelled"
+                );
+
+            }
+        );
+
+
+    const totalLocations = 8;
+
+    const slotsPerLocation = 12;
+
+    const totalSlots =
+        totalLocations *
+        slotsPerLocation;
+
+
+    const occupiedSlots =
+        activeBookings.length;
+
+
+    const availableSlots =
+        Math.max(
+            0,
+            totalSlots -
+            occupiedSlots
+        );
+
+
+    const revenue =
+        activeBookings.reduce(
+            function(total, booking) {
+
+                return total +
+                    (Number(
+                        booking.fee
+                    ) || 0);
+
+            },
+            0
+        );
+
+
+    document.getElementById(
+        "totalSlots"
+    ).textContent =
+        totalSlots;
+
+
+    document.getElementById(
+        "availableSlots"
+    ).textContent =
+        availableSlots;
+
+
+    document.getElementById(
+        "occupiedSlots"
+    ).textContent =
+        occupiedSlots;
+
+
+    document.getElementById(
+        "totalBookings"
+    ).textContent =
+        activeBookings.length;
+
+
+    document.getElementById(
+        "totalRevenue"
+    ).textContent =
+        "₹" + revenue;
+
+}
+
+
+// ========================================
+// DISPLAY PARKING SLOTS
+// ========================================
+
+function displayAdminSlots() {
+
+    const location =
+        document.getElementById(
+            "adminLocation"
+        ).value;
+
+
+    const container =
+        document.getElementById(
+            "adminSlots"
+        );
+
+
+    container.innerHTML = "";
+
+
+    const bookings =
+        getBookings();
+
+
+    for (
+        let i = 1;
+        i <= 12;
+        i++
+    ) {
+
+        const slotName =
+            "Slot " + i;
+
+
+        const booked =
+            bookings.some(
+                function(booking) {
+
+                    return (
+
+                        booking.location ===
+                        location
+
+                        &&
+
+                        booking.slot ===
+                        slotName
+
+                        &&
+
+                        booking.status !==
+                        "Cancelled"
+
+                    );
+
+                }
+            );
+
+
+        const slot =
+            document.createElement(
+                "div"
+            );
+
+
+        slot.className =
+            booked
+                ? "admin-slot occupied"
+                : "admin-slot available";
+
+
+        slot.innerHTML = `
+
+            ${slotName}
+
+            <span>
+                ${
+                    booked
+                        ? "🔴 Occupied"
+                        : "🟢 Available"
+                }
+            </span>
+
+        `;
+
+
+        container.appendChild(
+            slot
+        );
+
+    }
+
+}
+
+
+// ========================================
+// DISPLAY BOOKINGS
+// ========================================
+
+function displayAdminBookings() {
+
+    const bookings =
+        getBookings();
+
+
+    const container =
+        document.getElementById(
+            "adminBookings"
+        );
+
+
+    container.innerHTML = "";
+
+
+    if (
+        bookings.length === 0
+    ) {
+
+        container.innerHTML = `
+
+            <div class="no-admin-bookings">
+
+                📋 No bookings available.
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    // Latest bookings first
+
+    const reversedBookings =
+        [...bookings].reverse();
+
+
+    reversedBookings.forEach(
+        function(booking) {
+
+
+            const card =
+                document.createElement(
+                    "div"
+                );
+
+
+            card.className =
+                "booking-admin-card";
+
+
+            const isCancelled =
+                booking.status ===
+                "Cancelled";
+
+
+            const statusClass =
+                isCancelled
+                    ? "cancelled-status"
+                    : "active-status";
+
+
+            card.innerHTML = `
+
+                <h3>
+                    🚗 ${
+                        booking.location ||
+                        "Parking"
+                    }
+                </h3>
+
+
+                <div class="booking-admin-details">
+
+
+                    <div class="booking-admin-detail">
+
+                        <strong>
+                            Booking ID
+                        </strong>
+
+                        ${
+                            booking.id ||
+                            "-"
+                        }
+
+                    </div>
+
+
+                    <div class="booking-admin-detail">
+
+                        <strong>
+                            Parking Slot
+                        </strong>
+
+                        ${
+                            booking.slot ||
+                            "-"
+                        }
+
+                    </div>
+
+
+                    <div class="booking-admin-detail">
+
+                        <strong>
+                            Fee
+                        </strong>
+
+                        ${
+                            Number(
+                                booking.fee
+                            ) === 0
+                                ? "FREE"
+                                : "₹" +
+                                  (
+                                      Number(
+                                          booking.fee
+                                      ) || 0
+                                  )
+                        }
+
+                    </div>
+
+
+                    <div class="booking-admin-detail">
+
+                        <strong>
+                            Booking Time
+                        </strong>
+
+                        ${
+                            booking.time ||
+                            "-"
+                        }
+
+                    </div>
+
+
+                    <div class="booking-admin-detail">
+
+                        <strong>
+                            Status
+                        </strong>
+
+                        <span class="${statusClass}">
+
+                            ${
+                                booking.status ||
+                                "Active"
+                            }
+
+                        </span>
+
+                    </div>
+
+
+                </div>
+
+            `;
+
+
+            container.appendChild(
+                card
+            );
+
+        }
+    );
+
+}
+
+
+// ========================================
+// INITIAL LOAD
+// ========================================
+
+function loadAdminDashboard() {
+
+    updateDashboard();
+
+    displayAdminSlots();
+
+    displayAdminBookings();
+
+}
+
+
+loadAdminDashboard();
+
+
+// ========================================
+// AUTO REFRESH
+// ========================================
+
+setInterval(
+    loadAdminDashboard,
+    2000
+);
+
+
+</script>
+
+
+</body>
+
+</html>

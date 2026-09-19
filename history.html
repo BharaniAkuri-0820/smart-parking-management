@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>My Bookings</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+
+        .history-page {
+            max-width: 1000px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+
+        .history-page h1 {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .history-subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 35px;
+        }
+
+        /* BOOKING CARD */
+
+        .booking-card {
+
+            background: white;
+
+            padding: 25px;
+
+            margin-bottom: 20px;
+
+            border-radius: 15px;
+
+            box-shadow:
+                0 5px 18px rgba(0,0,0,0.08);
+
+        }
+
+        .booking-card h2 {
+
+            margin-top: 0;
+
+            color: #111827;
+
+        }
+
+        .booking-details {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 12px;
+
+            margin: 20px 0;
+
+        }
+
+        .detail {
+
+            padding: 12px;
+
+            background: #f8fafc;
+
+            border-radius: 8px;
+
+        }
+
+        .detail strong {
+
+            display: block;
+
+            color: #6b7280;
+
+            font-size: 13px;
+
+            margin-bottom: 4px;
+
+        }
+
+        /* STATUS */
+
+        .booking-status {
+
+            display: inline-block;
+
+            padding: 6px 12px;
+
+            border-radius: 20px;
+
+            font-size: 13px;
+
+            font-weight: bold;
+
+        }
+
+        .active {
+
+            background: #dcfce7;
+
+            color: #15803d;
+
+        }
+
+        .cancelled {
+
+            background: #fee2e2;
+
+            color: #dc2626;
+
+        }
+
+        /* BUTTONS */
+
+        .booking-actions {
+
+            display: flex;
+
+            gap: 10px;
+
+            flex-wrap: wrap;
+
+            margin-top: 20px;
+
+        }
+
+        .cancel-btn {
+
+            padding: 11px 18px;
+
+            border: none;
+
+            border-radius: 8px;
+
+            background: #dc2626;
+
+            color: white;
+
+            cursor: pointer;
+
+            font-size: 14px;
+
+        }
+
+        .cancel-btn:hover {
+
+            background: #b91c1c;
+
+        }
+
+        .map-btn {
+
+            padding: 11px 18px;
+
+            border-radius: 8px;
+
+            background: #16a34a;
+
+            color: white;
+
+            text-decoration: none;
+
+            font-size: 14px;
+
+        }
+
+        .map-btn:hover {
+
+            background: #15803d;
+
+        }
+
+        /* EMPTY */
+
+        .no-bookings {
+
+            text-align: center;
+
+            padding: 60px 20px;
+
+            background: white;
+
+            border-radius: 15px;
+
+            box-shadow:
+                0 5px 18px rgba(0,0,0,0.08);
+
+        }
+
+        .no-bookings > div {
+
+            font-size: 50px;
+
+        }
+
+        .no-bookings a {
+
+            display: inline-block;
+
+            margin-top: 15px;
+
+            padding: 12px 20px;
+
+            background: #2563eb;
+
+            color: white;
+
+            text-decoration: none;
+
+            border-radius: 8px;
+
+        }
+
+        @media (max-width: 600px) {
+
+            .booking-details {
+
+                grid-template-columns: 1fr;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <div class="logo">
+        🚗 Smart Parking
+    </div>
+
+    <nav>
+
+        <a href="index.html">
+            Home
+        </a>
+
+        <a href="locations.html">
+            Locations
+        </a>
+
+        <a href="history.html">
+            My Bookings
+        </a>
+
+        <a href="admin.html">
+            Admin
+        </a>
+
+    </nav>
+
+</header>
+
+
+<main>
+
+<section class="history-page">
+
+
+    <h1>
+        My Bookings
+    </h1>
+
+
+    <p class="history-subtitle">
+        View and manage your parking bookings.
+    </p>
+
+
+    <div id="bookingList"></div>
+
+
+    <div id="noBookings"
+         class="no-bookings">
+
+        <div>
+            🅿️
+        </div>
+
+        <h2>
+            No Bookings Yet
+        </h2>
+
+        <p>
+            You haven't made any parking bookings.
+        </p>
+
+        <a href="locations.html">
+            Find Parking
+        </a>
+
+    </div>
+
+
+</section>
+
+</main>
+
+
+<footer>
+
+    <p>
+        © 2026 Universal Smart Parking Management Platform
+    </p>
+
+</footer>
+
+
+<script>
+
+    /* =========================
+       GET BOOKINGS
+    ========================= */
+
+    function getBookings() {
+
+        return JSON.parse(
+            localStorage.getItem(
+                "bookings"
+            )
+        ) || [];
+
+    }
+
+
+    /* =========================
+       DISPLAY BOOKINGS
+    ========================= */
+
+    function displayBookings() {
+
+        const bookings =
+            getBookings();
+
+
+        const bookingList =
+            document.getElementById(
+                "bookingList"
+            );
+
+
+        const noBookings =
+            document.getElementById(
+                "noBookings"
+            );
+
+
+        bookingList.innerHTML = "";
+
+
+        if (bookings.length === 0) {
+
+            noBookings.style.display =
+                "block";
+
+            return;
+
+        }
+
+
+        noBookings.style.display =
+            "none";
+
+
+        bookings.forEach(
+            function(booking, index) {
+
+                const card =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                card.className =
+                    "booking-card";
+
+
+                const isCancelled =
+                    booking.status ===
+                    "Cancelled";
+
+
+                const statusClass =
+                    isCancelled
+                        ? "cancelled"
+                        : "active";
+
+
+                const statusText =
+                    isCancelled
+                        ? "Cancelled"
+                        : "Active";
+
+
+                const fee =
+                    Number(
+                        booking.fee
+                    ) || 0;
+
+
+                card.innerHTML = `
+
+                    <h2>
+                        🚗 ${booking.location || "Parking"}
+                    </h2>
+
+                    <span class="booking-status ${statusClass}">
+                        ${statusText}
+                    </span>
+
+                    <div class="booking-details">
+
+                        <div class="detail">
+
+                            <strong>
+                                Parking Slot
+                            </strong>
+
+                            ${booking.slot || "-"}
+
+                        </div>
+
+
+                        <div class="detail">
+
+                            <strong>
+                                Parking Fee
+                            </strong>
+
+                            ${
+                                fee === 0
+                                ? "FREE"
+                                : "₹" + fee + " / hour"
+                            }
+
+                        </div>
+
+
+                        <div class="detail">
+
+                            <strong>
+                                Booking Time
+                            </strong>
+
+                            ${booking.time || "-"}
+
+                        </div>
+
+
+                        <div class="detail">
+
+                            <strong>
+                                Booking ID
+                            </strong>
+
+                            ${booking.id || "BK" + (index + 1)}
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="booking-actions">
+
+                        ${
+                            !isCancelled
+                            ? `
+                                <button
+                                    class="cancel-btn"
+                                    onclick="cancelBooking(${index})">
+
+                                    ❌ Cancel Booking
+
+                                </button>
+                              `
+                            : ""
+                        }
+
+
+                        ${
+                            !isCancelled
+                            ? `
+                                <a
+                                    class="map-btn"
+                                    target="_blank"
+                                    href="https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
+                                        booking.location || "parking"
+                                    )}">
+
+                                    📍 Directions
+
+                                </a>
+                              `
+                            : ""
+                        }
+
+                    </div>
+
+                `;
+
+
+                bookingList.appendChild(
+                    card
+                );
+
+            }
+        );
+
+    }
+
+
+    /* =========================
+       CANCEL BOOKING
+    ========================= */
+
+    function cancelBooking(index) {
+
+        const bookings =
+            getBookings();
+
+
+        const booking =
+            bookings[index];
+
+
+        if (!booking) {
+
+            return;
+
+        }
+
+
+        const confirmCancel =
+            confirm(
+                "Are you sure you want to cancel this booking?"
+            );
+
+
+        if (!confirmCancel) {
+
+            return;
+
+        }
+
+
+        booking.status =
+            "Cancelled";
+
+
+        booking.cancelledAt =
+            new Date().toLocaleString();
+
+
+        localStorage.setItem(
+            "bookings",
+            JSON.stringify(
+                bookings
+            )
+        );
+
+
+        alert(
+            "Booking cancelled successfully!"
+        );
+
+
+        displayBookings();
+
+    }
+
+
+    /* =========================
+       INITIAL LOAD
+    ========================= */
+
+    displayBookings();
+
+</script>
+
+
+</body>
+
+</html>

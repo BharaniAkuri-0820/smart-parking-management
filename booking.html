@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Book Parking</title>
+
+    <link rel="stylesheet"
+          href="css/style.css">
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <div class="logo">
+        🚗 Smart Parking
+    </div>
+
+    <nav>
+
+        <a href="index.html">
+            Home
+        </a>
+
+        <a href="locations.html">
+            Locations
+        </a>
+
+        <a href="history.html">
+            My Bookings
+        </a>
+
+        <a href="admin.html">
+            Admin
+        </a>
+
+    </nav>
+
+</header>
+
+
+<main>
+
+<section class="booking-page">
+
+    <h1>Complete Your Booking</h1>
+
+    <p>
+        Enter your vehicle and parking details.
+    </p>
+
+
+    <form id="bookingForm">
+
+
+        <!-- PERSONAL DETAILS -->
+
+        <div class="form-section">
+
+            <h2>👤 Personal Details</h2>
+
+
+            <label>
+                Full Name
+            </label>
+
+            <input
+                type="text"
+                id="name"
+                placeholder="Enter your full name"
+                required
+            >
+
+
+            <label>
+                Phone Number
+            </label>
+
+            <input
+                type="tel"
+                id="phone"
+                placeholder="Enter phone number"
+                pattern="[0-9]{10}"
+                maxlength="10"
+                required
+            >
+
+        </div>
+
+
+        <!-- VEHICLE DETAILS -->
+
+        <div class="form-section">
+
+            <h2>🚗 Vehicle Details</h2>
+
+
+            <label>
+                Vehicle Number
+            </label>
+
+            <input
+                type="text"
+                id="vehicleNumber"
+                placeholder="Example: AP39AB1234"
+                required
+            >
+
+
+            <label>
+                Vehicle Type
+            </label>
+
+            <select id="vehicleType" required>
+
+                <option value="">
+                    Select Vehicle
+                </option>
+
+                <option value="Bike">
+                    🏍️ Bike
+                </option>
+
+                <option value="Car">
+                    🚗 Car
+                </option>
+
+                <option value="SUV">
+                    🚙 SUV
+                </option>
+
+                <option value="Other">
+                    🚐 Other
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <!-- PARKING DETAILS -->
+
+        <div class="form-section">
+
+            <h2>🅿️ Parking Details</h2>
+
+
+            <label>
+                Parking Date
+            </label>
+
+            <input
+                type="date"
+                id="parkingDate"
+                required
+            >
+
+
+            <label>
+                Parking Duration
+            </label>
+
+            <select id="duration" required>
+
+                <option value="">
+                    Select Duration
+                </option>
+
+                <option value="1">
+                    1 Hour
+                </option>
+
+                <option value="2">
+                    2 Hours
+                </option>
+
+                <option value="3">
+                    3 Hours
+                </option>
+
+                <option value="4">
+                    4 Hours
+                </option>
+
+                <option value="5">
+                    5 Hours
+                </option>
+
+                <option value="6">
+                    6 Hours
+                </option>
+
+                <option value="8">
+                    8 Hours
+                </option>
+
+                <option value="12">
+                    12 Hours
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <!-- BOOKING SUMMARY -->
+
+        <div class="booking-summary">
+
+            <h2>📋 Booking Summary</h2>
+
+            <p>
+                Location:
+                <strong id="summaryLocation">
+                    -
+                </strong>
+            </p>
+
+            <p>
+                Slot:
+                <strong id="summarySlot">
+                    -
+                </strong>
+            </p>
+
+            <p>
+                Duration:
+                <strong id="summaryDuration">
+                    -
+                </strong>
+            </p>
+
+            <p class="total">
+
+                Total Fee:
+                <strong id="totalFee">
+                    -
+                </strong>
+
+            </p>
+
+        </div>
+
+
+        <button
+            type="submit"
+            class="confirm-btn"
+        >
+            Confirm Booking
+        </button>
+
+
+    </form>
+
+</section>
+
+</main>
+
+
+<footer>
+
+    <p>
+        © 2026 Universal Smart Parking Management Platform
+    </p>
+
+</footer>
+
+
+<script src="js/script.js"></script>
+
+</body>
+
+</html>

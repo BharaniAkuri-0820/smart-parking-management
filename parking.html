@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Parking Slots</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+
+        .parking-page {
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .parking-status {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 25px 0;
+            flex-wrap: wrap;
+        }
+
+        .status-box {
+            display: inline-block;
+            width: 15px;
+            height: 15px;
+            border-radius: 4px;
+            margin-right: 5px;
+        }
+
+        .status-box.available {
+            background: #22c55e;
+        }
+
+        .status-box.occupied {
+            background: #ef4444;
+        }
+
+        .status-box.selected {
+            background: #2563eb;
+        }
+
+        .parking-area {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            max-width: 650px;
+            margin: 30px auto;
+        }
+
+        .slot {
+            padding: 25px 10px;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 18px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .available-slot {
+            background: #22c55e;
+            color: white;
+        }
+
+        .available-slot:hover {
+            transform: scale(1.05);
+        }
+
+        .occupied-slot {
+            background: #ef4444;
+            color: white;
+            cursor: not-allowed;
+        }
+
+        .selected-slot {
+            background: #2563eb !important;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .selection-box {
+            max-width: 500px;
+            margin: 30px auto;
+            padding: 25px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 18px rgba(0,0,0,0.08);
+        }
+
+        .selection-box h2 {
+            margin-bottom: 20px;
+        }
+
+        .selection-box p {
+            font-size: 18px;
+        }
+
+        .selection-box button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            background: #2563eb;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .selection-box button:hover {
+            background: #1d4ed8;
+        }
+
+        .selection-box button:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        .location-badge {
+            display: inline-block;
+            margin: 10px;
+            padding: 8px 15px;
+            background: #eff6ff;
+            color: #2563eb;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        @media (max-width: 600px) {
+
+            .parking-area {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .parking-status {
+                gap: 15px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <div class="logo">
+        🚗 Smart Parking
+    </div>
+
+    <nav>
+
+        <a href="index.html">
+            Home
+        </a>
+
+        <a href="locations.html">
+            Locations
+        </a>
+
+        <a href="history.html">
+            My Bookings
+        </a>
+
+        <a href="admin.html">
+            Admin
+        </a>
+
+    </nav>
+
+</header>
+
+
+<main>
+
+<section class="parking-page">
+
+
+    <h1 id="locationTitle">
+        Parking Slots
+    </h1>
+
+
+    <div class="location-badge"
+         id="locationBadge">
+
+        Location
+
+    </div>
+
+
+    <p id="locationInfo">
+        Select an available parking slot.
+    </p>
+
+
+    <!-- STATUS -->
+
+    <div class="parking-status">
+
+        <div>
+            <span class="status-box available"></span>
+            Available
+        </div>
+
+        <div>
+            <span class="status-box occupied"></span>
+            Occupied
+        </div>
+
+        <div>
+            <span class="status-box selected"></span>
+            Selected
+        </div>
+
+    </div>
+
+
+    <!-- PARKING AREA -->
+
+    <div class="parking-area">
+
+
+        <div class="slot"
+             data-slot="A01"
+             onclick="selectSlot(this)">
+            A01
+        </div>
+
+
+        <div class="slot"
+             data-slot="A02"
+             onclick="selectSlot(this)">
+            A02
+        </div>
+
+
+        <div class="slot"
+             data-slot="A03"
+             onclick="selectSlot(this)">
+            A03
+        </div>
+
+
+        <div class="slot"
+             data-slot="A04"
+             onclick="selectSlot(this)">
+            A04
+        </div>
+
+
+        <div class="slot"
+             data-slot="B01"
+             onclick="selectSlot(this)">
+            B01
+        </div>
+
+
+        <div class="slot"
+             data-slot="B02"
+             onclick="selectSlot(this)">
+            B02
+        </div>
+
+
+        <div class="slot"
+             data-slot="B03"
+             onclick="selectSlot(this)">
+            B03
+        </div>
+
+
+        <div class="slot"
+             data-slot="B04"
+             onclick="selectSlot(this)">
+            B04
+        </div>
+
+
+        <div class="slot"
+             data-slot="C01"
+             onclick="selectSlot(this)">
+            C01
+        </div>
+
+
+        <div class="slot"
+             data-slot="C02"
+             onclick="selectSlot(this)">
+            C02
+        </div>
+
+
+        <div class="slot"
+             data-slot="C03"
+             onclick="selectSlot(this)">
+            C03
+        </div>
+
+
+        <div class="slot"
+             data-slot="C04"
+             onclick="selectSlot(this)">
+            C04
+        </div>
+
+
+    </div>
+
+
+    <!-- SELECTED SLOT -->
+
+    <div class="selection-box">
+
+        <h2>
+            Selected Slot
+        </h2>
+
+
+        <p>
+
+            Location:
+            <strong id="selectedLocation">
+                -
+            </strong>
+
+        </p>
+
+
+        <p>
+
+            Slot:
+            <strong id="selectedSlot">
+                None
+            </strong>
+
+        </p>
+
+
+        <p>
+
+            Parking Fee:
+            <strong id="parkingFee">
+                -
+            </strong>
+
+        </p>
+
+
+        <button
+            id="continueButton"
+            onclick="continueBooking()"
+            disabled>
+
+            Continue Booking
+
+        </button>
+
+    </div>
+
+
+</section>
+
+</main>
+
+
+<footer>
+
+    <p>
+        © 2026 Universal Smart Parking Management Platform
+    </p>
+
+</footer>
+
+
+<script>
+
+    /* =========================
+       GET LOCATION FROM URL
+    ========================= */
+
+    const params =
+        new URLSearchParams(
+            window.location.search
+        );
+
+
+    let locationKey =
+        params.get("location");
+
+
+    if (!locationKey) {
+
+        locationKey = "college";
+
+    }
+
+
+    /* =========================
+       LOCATION INFORMATION
+    ========================= */
+
+    const locations = {
+
+        college: {
+            name: "College",
+            fee: 0
+        },
+
+        hospital: {
+            name: "Hospital",
+            fee: 20
+        },
+
+        mall: {
+            name: "Shopping Mall",
+            fee: 30
+        },
+
+        airport: {
+            name: "Airport",
+            fee: 50
+        },
+
+        office: {
+            name: "Office",
+            fee: 0
+        },
+
+        cinema: {
+            name: "Cinema",
+            fee: 20
+        },
+
+        stadium: {
+            name: "Stadium",
+            fee: 40
+        },
+
+        public: {
+            name: "Public Parking",
+            fee: 10
+        }
+
+    };
+
+
+    const currentLocation =
+        locations[locationKey] ||
+        locations.college;
+
+
+    document.getElementById(
+        "locationTitle"
+    ).textContent =
+        currentLocation.name +
+        " Parking";
+
+
+    document.getElementById(
+        "locationBadge"
+    ).textContent =
+        currentLocation.name;
+
+
+    document.getElementById(
+        "selectedLocation"
+    ).textContent =
+        currentLocation.name;
+
+
+    /* =========================
+       SLOT SELECTION
+    ========================= */
+
+    let selectedSlot = null;
+
+
+    const slotElements =
+        document.querySelectorAll(
+            ".slot"
+        );
+
+
+    function getBookings() {
+
+        return JSON.parse(
+            localStorage.getItem(
+                "bookings"
+            )
+        ) || [];
+
+    }
+
+
+    function updateSlots() {
+
+        const bookings =
+            getBookings();
+
+
+        slotElements.forEach(
+            function(slot) {
+
+                const slotName =
+                    slot.dataset.slot;
+
+
+                const alreadyBooked =
+                    bookings.some(
+                        function(booking) {
+
+                            return (
+                                booking.locationKey ===
+                                    locationKey
+                                &&
+                                booking.slot ===
+                                    slotName
+                            );
+
+                        }
+                    );
+
+
+                slot.classList.remove(
+                    "available-slot"
+                );
+
+
+                slot.classList.remove(
+                    "occupied-slot"
+                );
+
+
+                slot.classList.remove(
+                    "selected-slot"
+                );
+
+
+                if (alreadyBooked) {
+
+                    slot.classList.add(
+                        "occupied-slot"
+                    );
+
+                    slot.onclick = null;
+
+                } else {
+
+                    slot.classList.add(
+                        "available-slot"
+                    );
+
+                    slot.onclick =
+                        function() {
+
+                            selectSlot(
+                                slot
+                            );
+
+                        };
+
+                }
+
+            }
+        );
+
+    }
+
+
+    function selectSlot(slot) {
+
+        if (
+            slot.classList.contains(
+                "occupied-slot"
+            )
+        ) {
+
+            return;
+
+        }
+
+
+        slotElements.forEach(
+            function(item) {
+
+                item.classList.remove(
+                    "selected-slot"
+                );
+
+            }
+        );
+
+
+        slot.classList.add(
+            "selected-slot"
+        );
+
+
+        selectedSlot =
+            slot.dataset.slot;
+
+
+        document.getElementById(
+            "selectedSlot"
+        ).textContent =
+            selectedSlot;
+
+
+        if (currentLocation.fee === 0) {
+
+            document.getElementById(
+                "parkingFee"
+            ).textContent =
+                "FREE";
+
+        } else {
+
+            document.getElementById(
+                "parkingFee"
+            ).textContent =
+                "₹" +
+                currentLocation.fee +
+                " / hour";
+
+        }
+
+
+        document.getElementById(
+            "continueButton"
+        ).disabled = false;
+
+    }
+
+
+    /* =========================
+       CONTINUE BOOKING
+    ========================= */
+
+    function continueBooking() {
+
+        if (!selectedSlot) {
+
+            alert(
+                "Please select a parking slot first."
+            );
+
+            return;
+
+        }
+
+
+        const bookingData = {
+
+            locationKey:
+                locationKey,
+
+            location:
+                currentLocation.name,
+
+            slot:
+                selectedSlot,
+
+            fee:
+                currentLocation.fee,
+
+            time:
+                new Date().toLocaleString()
+
+        };
+
+
+        localStorage.setItem(
+            "selectedBooking",
+            JSON.stringify(
+                bookingData
+            )
+        );
+
+
+        window.location.href =
+            "booking.html";
+
+    }
+
+
+    /* =========================
+       INITIAL LOAD
+    ========================= */
+
+    updateSlots();
+
+</script>
+
+
+</body>
+
+</html>
